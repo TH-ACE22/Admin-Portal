@@ -1,0 +1,227 @@
+/* src/styles/Dashboard.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Sora&display=swap');
+
+/* Base Styles */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Outer container */
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Main area defaults to left margin = 250px (expanded sidebar) */
+.dashboard-main {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  display: flex;
+  flex-direction: column;
+  padding-top: 68px; /* If topbar is 68px high */
+  box-sizing: border-box;
+  height: 100%;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+/* If the sidebar is collapsed (width=80px), the main content margin changes */
+.sidebar.collapsed ~ .dashboard-main {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+/* Dashboard Content */
+.dashboard-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* Example Card style */
+.card {
+  width: 100%;
+  height: 180px;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #fff;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Sample gradient backgrounds for demonstration */
+.card:nth-child(1) {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+.card:nth-child(2) {
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
+}
+.card:nth-child(3) {
+  background: linear-gradient(135deg, #fa709a, #fee140);
+}
+.card:nth-child(4) {
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+}
+.card:nth-child(5) {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+}
+
+/* 
+  The 6th card is typically "System Health" in your example data.
+  Here we set it to a violet-inspired gradient.
+*/
+.card:nth-child(6) {
+  background: linear-gradient(135deg, #8a2be2, #bb86fc);
+}
+
+.card-icon {
+  width: 64px;
+  height: 64px;
+  margin-right: 16px;
+}
+
+.card-info h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.card-info p {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Additional sections, summary cards, etc. */
+.dashboard-extras {
+  margin-top: 2rem;
+}
+
+.summary-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  flex: 1;
+  min-width: 200px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.summary-card h4 {
+  font-family: 'Sora', sans-serif;
+  font-size: 18px;
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.summary-card p {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
+}
+
+.recent-activity {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.recent-activity h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.recent-activity ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-activity li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.recent-activity li:last-child {
+  border-bottom: none;
+}
+
+.recent-activity li span {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1024px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .dashboard-main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+  }
+
+  .card-icon {
+    margin-bottom: 10px;
+  }
+
+  .summary-row {
+    flex-direction: column;
+  }
+}

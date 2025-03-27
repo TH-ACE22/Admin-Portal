@@ -1,0 +1,157 @@
+/* src/styles/Sidebar.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Sora&display=swap');
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px; /* expanded width */
+  height: 100vh;
+  background-color: #5874C6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  box-sizing: border-box;
+  font-family: 'Sora', sans-serif;
+  color: #fff;
+  z-index: 1000;
+  transition: width 0.3s ease, padding 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+  padding: 16px 8px;
+}
+
+/* Sidebar top: contains the toggle button */
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* Toggle button */
+.menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #fff;
+}
+
+.menu-icon {
+  width: 21px;
+  height: 16px;
+}
+
+/* Sidebar logo */
+.sidebar-logo {
+  text-align: center;
+  margin-bottom: 20px;
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* logo non-clickable */
+}
+
+.sidebar.collapsed .sidebar-logo {
+  opacity: 0;
+}
+
+.logo-image {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/* Navigation */
+.sidebar-nav {
+  width: 100%;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Sidebar buttons */
+.sidebar-btn {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  margin-bottom: 16px; /* consistent spacing */
+  background-color: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar-btn:hover {
+  background-color: #4d4d4d;
+  transform: scale(1.02);
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  margin-right: 16px;
+  transition: margin 0.3s ease;
+}
+
+.sidebar.collapsed .btn-icon {
+  margin-right: 0;
+  margin: 0 auto;
+  display: block;
+}
+
+/* When collapsed, fade out button text */
+.sidebar-btn span {
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-btn span {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Sidebar bottom area */
+.sidebar-bottom {
+  width: 100%;
+}
+
+/* Logout button styling */
+.logout-btn {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #4d4d4d;
+  transform: scale(1.02);
+}
+
+.sidebar.collapsed .logout-btn .btn-icon {
+  margin-right: 0;
+  margin: 0 auto;
+  display: block;
+}
+
+.sidebar.collapsed .logout-btn span {
+  opacity: 0;
+  pointer-events: none;
+}

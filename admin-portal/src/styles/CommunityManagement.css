@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+/* Overall page container: Sidebar + Main Container */
+.community-management-page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  overflow: hidden;
+}
+
+/* Main container for top bar and content */
+.community-management-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 250px; /* Default margin for expanded sidebar */
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+/* When sidebar is collapsed, adjust the main container */
+.sidebar.collapsed ~ .community-management-container {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+/* Elevated Top Bar */
+.cm-topbar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 1rem;
+}
+
+/* Menu Button in Top Bar */
+.cm-menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+.cm-menu-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Home Button in Top Bar */
+.cm-home-btn {
+  margin-right: 1rem;
+  display: inline-block;
+}
+.cm-home-btn img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+/* Back Button */
+.cm-back-btn {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: auto;
+  padding: 0.25rem 0.75rem;
+  transition: background-color 0.2s ease;
+}
+.cm-back-btn:hover {
+  background-color: #f2f2f2;
+}
+
+/* Top Bar Heading */
+.cm-topbar h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  padding-right: 1rem;
+}
+
+/* Content area below top bar */
+.cm-content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* Add-Form styling */
+.cm-add-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.cm-add-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.cm-add-form button {
+  background-color: #5874C6;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.cm-add-form button:hover {
+  background-color: #4f65b2;
+}
+
+/* Enhanced Table */
+.cm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+.cm-table thead {
+  background: linear-gradient(90deg, #4f65b2 0%, #5874C6 100%);
+  color: #fff;
+}
+.cm-table th,
+.cm-table td {
+  padding: 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+.cm-table thead th {
+  font-weight: 600;
+}
+.cm-table tbody tr {
+  border-bottom: 1px solid #eee;
+}
+.cm-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 100%);
+}
+.cm-table tbody button {
+  background-color: #eee;
+  border: none;
+  padding: 6px 12px;
+  margin-right: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.cm-table tbody button:hover {
+  background-color: #ddd;
+}
+.cm-table td[colspan="6"] {
+  text-align: center;
+  color: #999;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .cm-topbar h2 {
+    font-size: 20px;
+  }
+  .cm-add-form {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cm-table th,
+  .cm-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

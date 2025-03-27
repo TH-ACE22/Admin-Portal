@@ -1,0 +1,91 @@
+/* src/styles/Topbar.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Sora&display=swap');
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 250px; /* expanded sidebar width */
+  width: calc(100% - 250px);
+  height: 68px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+  z-index: 999;
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
+/* Shift left to 80px if sidebar is collapsed, 
+   plus expand width to fill remainder. */
+.sidebar.collapsed ~ .topbar {
+  left: 80px;
+  width: calc(100% - 80px);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 16px;
+  font-size: 16px;
+}
+
+/* Middle area for search or other items */
+.topbar-middle {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-input {
+  width: 50%;
+  max-width: 400px;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.notification-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 16px;
+}
+
+.notif-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+}
+
+.user-info span {
+  margin-right: 8px;
+}
+
+.account-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
