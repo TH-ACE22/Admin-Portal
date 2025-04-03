@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+/* Define CSS variables */
+:root {
+    --primary-gradient-start: #4f65b2;
+    --primary-gradient-end: #5874C6;
+    --header-text-color: #fff;
+    --row-border-color: #eee;
+    --hover-background: rgba(0, 0, 0, 0.04);
+    --button-bg: #f5f5f5;
+    --button-bg-hover: #e0e0e0;
+    --highlight-color: #ff6f61;
+}
+
+/* Overall page container */
+.reports-suggestions-page {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    overflow: hidden;
+}
+
+/* Main container */
+.reports-suggestions-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.sidebar.collapsed ~ .reports-suggestions-container {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* Top Bar */
+.rs-topbar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.rs-menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+.rs-menu-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.rs-home-btn {
+    margin-right: 2rem;
+    padding-right: 1rem;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    display: inline-block;
+}
+.rs-home-btn img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.rs-topbar h2 {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+}
+
+/* Content area */
+.rs-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Filter Section */
+.rs-filter {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 16px;
+}
+.rs-filter label {
+    font-weight: 600;
+}
+.rs-filter select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+
+
+/* Table Container */
+.rs-table-container {
+    flex: 1;
+    min-height: 300px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+/* Enhanced Table */
+.rs-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 16px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    table-layout: auto;
+}
+
+.rs-table thead {
+    background: linear-gradient(90deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+    color: var(--header-text-color);
+}
+
+.rs-table th,
+.rs-table td {
+    padding: 16px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: normal;
+    transition: background-color 0.3s ease;
+}
+
+.rs-table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rs-table tbody tr {
+    border-bottom: 1px solid var(--row-border-color);
+    transition: background-color 0.3s ease;
+}
+
+/* Zebra striping */
+.rs-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.rs-table tbody tr:hover {
+    background: var(--hover-background);
+}
+
+.rs-table tbody td:last-child {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Button styling */
+.rs-table tbody button {
+    background-color: var(--button-bg);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.rs-table tbody button:hover:not(:disabled) {
+    background-color: var(--button-bg-hover);
+    transform: translateY(-2px);
+}
+
+/* Disabled button styling */
+.rs-table tbody button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #666;
+}
+
+/* Status Color Indicators */
+.status-pending {
+    color: #ff6f61;
+    font-weight: 600;
+}
+.status-resolved {
+    color: #28a745;
+    font-weight: 600;
+}
+.status-rejected {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+/* Style for the response textarea */
+textarea#response-text {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+textarea#response-text:focus {
+    outline: none;
+    border-color: var(--primary-gradient-end);
+}
+
+
+.modal {
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.modal p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.modal textarea {
+    width: 100%;
+    height: 100px;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.modal-actions button {
+    background-color: var(--button-bg);
+    border: none;
+    padding: 8px 12px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-actions button:hover:not(:disabled) {
+    background-color: var(--button-bg-hover);
+    transform: translateY(-2px);
+}
+
+.modal-actions button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .rs-topbar h2 {
+        font-size: 20px;
+    }
+    .rs-filter {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .rs-table th,
+    .rs-table td {
+        font-size: 14px;
+        padding: 12px;
+    }
+}

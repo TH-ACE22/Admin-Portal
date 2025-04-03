@@ -10,41 +10,72 @@
   overflow: hidden;
 }
 
-/* Main container for top bar and content */
+/* SIDEBAR (Collapsible) */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;        /* Expanded width */
+  height: 100vh;
+  background-color: #5874C6;  /* Primary color for your brand */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  color: #fff;
+  z-index: 1000;
+  transition: width 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+}
+
+/* Collapsed Sidebar: shrinks to 80px */
+.sidebar.collapsed {
+  width: 80px;
+  padding: 16px 6px;
+}
+
+/* MAIN CONTAINER: Houses the top bar + content area */
 .channel-management-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 250px; /* Default margin for expanded sidebar */
+  margin-left: 250px;   /* Default margin for expanded sidebar */
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-/* When sidebar is collapsed, adjust the main container */
+/* When sidebar is collapsed, shift the container to the left by 80px */
 .sidebar.collapsed ~ .channel-management-container {
   margin-left: 80px;
   width: calc(100% - 80px);
 }
 
-/* Elevated Top Bar */
+/* TOP BAR */
 .cm-topbar {
+  position: relative;   /* Keep in-flow or make absolute if you prefer */
   display: flex;
   align-items: center;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
+  z-index: 999;         /* Stays above content if needed */
 }
 
-/* Home Button in Top Bar: positioned at the far left */
-.cm-home-btn {
-  margin-right: 1rem;
-  display: inline-block;
-}
-.cm-home-btn img {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-}
+/* If you prefer an absolutely-positioned top bar that also shifts:
+   .cm-topbar {
+     position: fixed;
+     top: 0;
+     left: 250px;
+     width: calc(100% - 250px);
+     ...
+   }
+
+   And then an adjacency rule:
+   .sidebar.collapsed ~ .channel-management-container .cm-topbar {
+     left: 80px;
+     width: calc(100% - 80px);
+   }
+*/
 
 /* Menu Button in Top Bar */
 .cm-menu-btn {
@@ -58,19 +89,15 @@
   height: 24px;
 }
 
-/* Back Button */
-.cm-back-btn {
-  background-color: transparent;
-  border: none;
-  color: #333;
-  font-size: 16px;
-  cursor: pointer;
-  margin-right: auto;
-  padding: 0.25rem 0.75rem;
-  transition: background-color 0.2s ease;
+/* Home Button in Top Bar */
+.cm-home-btn {
+  margin-right: 1rem;
+  display: inline-block;
 }
-.cm-back-btn:hover {
-  background-color: #f2f2f2;
+.cm-home-btn img {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 /* Top Bar Heading */
@@ -79,17 +106,20 @@
   font-weight: 600;
   margin: 0;
   padding-right: 1rem;
+  text-align: center;
 }
 
-/* Content area below top bar */
+/* CONTENT BELOW TOPBAR */
 .cm-content {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Add-Form styling */
+/* SAMPLE: Add-Form styling (if needed) */
 .cm-add-form {
   display: flex;
   gap: 12px;
@@ -115,53 +145,38 @@
   background-color: #4f65b2;
 }
 
-/* Enhanced Table */
+/* SAMPLE: Table Container & styling (you can merge with your existing rules) */
+.cm-table-container {
+  flex: 1;
+  min-height: 600px;
+  overflow-y: auto;
+}
+
 .cm-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 16px;
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;  /* Even column distribution */
+  min-width: 900px;
 }
+
 .cm-table thead {
   background: linear-gradient(90deg, #4f65b2 0%, #5874C6 100%);
   color: #fff;
 }
+
 .cm-table th,
 .cm-table td {
   padding: 12px;
   text-align: left;
-  white-space: nowrap;
-}
-.cm-table thead th {
-  font-weight: 600;
-}
-.cm-table tbody tr {
-  border-bottom: 1px solid #eee;
-}
-.cm-table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.04) 100%);
-}
-.cm-table tbody button {
-  background-color: #eee;
-  border: none;
-  padding: 6px 12px;
-  margin-right: 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-}
-.cm-table tbody button:hover {
-  background-color: #ddd;
-}
-.cm-table td[colspan="5"] {
-  text-align: center;
-  color: #999;
+  white-space: normal;
 }
 
-/* Responsive Adjustments */
+/* Responsive Media Queries */
 @media (max-width: 768px) {
   .cm-topbar h2 {
     font-size: 20px;

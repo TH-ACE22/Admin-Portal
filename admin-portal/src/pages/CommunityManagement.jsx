@@ -1,6 +1,7 @@
+// src/pages/CommunityManagement.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
-import Sidebar from '../components/Sidebar'; // Ensure the correct import path
+import { Link } from 'react-router-dom'; // For navigation
+import Sidebar from '../components/Sidebar';
 import '../styles/CommunityManagement.css';
 
 const CommunityManagement = () => {
@@ -57,107 +58,104 @@ const CommunityManagement = () => {
     setCommunities(communities.filter((c) => c._id !== _id));
   };
 
-
   return (
-    <div className="community-management-page">
-      {/* Sidebar for navigation */}
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={handleToggleSidebar} />
+      <div className="community-management-page">
+        {/* Sidebar for navigation */}
+        <Sidebar isOpen={sidebarOpen} toggleSidebar={handleToggleSidebar} />
 
-      {/* Main container for top bar + content */}
-      <div className="community-management-container">
-        {/* Elevated Top Bar */}
-        <div className="cm-topbar">
-          {/* Menu button to collapse/expand the sidebar */}
-          <button className="cm-menu-btn" onClick={handleToggleSidebar}>
-            <img src="/icons/menu.svg" alt="Toggle Sidebar" />
-          </button>
-          {/* Home icon: clicking it navigates to /dashboard */}
-          <Link to="/dashboard" className="cm-home-btn">
-            <img src="/icons/home.svg" alt="Home" />
-          </Link>
-          {/* Back button */}
+        {/* Main container for top bar and content */}
+        <div className="community-management-container">
+          {/* Elevated Top Bar */}
+          <div className="cm-topbar">
+            {/* Menu button to toggle sidebar */}
 
-          <h2>Community Management</h2>
-        </div>
-
-        <div className="cm-content">
-          {/* Add Form */}
-          <div className="cm-add-form">
-            <input
-              type="text"
-              placeholder="Name"
-              value={newComm.name}
-              onChange={(e) =>
-                setNewComm({ ...newComm, name: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Description"
-              value={newComm.description}
-              onChange={(e) =>
-                setNewComm({ ...newComm, description: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Channels (comma separated)"
-              value={newComm.channels}
-              onChange={(e) =>
-                setNewComm({ ...newComm, channels: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Created By"
-              value={newComm.createdBy}
-              onChange={(e) =>
-                setNewComm({ ...newComm, createdBy: e.target.value })
-              }
-            />
-            <button onClick={handleAddCommunity}>Add Community</button>
+            {/* Home icon */}
+            <Link to="/dashboard" className="cm-home-btn">
+              <img src="/icons/home.svg" alt="Home" />
+            </Link>
+            {/* Top Bar Heading */}
+            <h2>Community Management</h2>
           </div>
 
-          {/* Table */}
-          <table className="cm-table">
-            <thead>
-              <tr>
-                <th>_id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Channels</th>
-                <th>Created By</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {communities.map((comm) => (
-                <tr key={comm._id}>
-                  <td>{comm._id}</td>
-                  <td>{comm.name}</td>
-                  <td>{comm.description}</td>
-                  <td>{comm.channels.join(', ')}</td>
-                  <td>{comm.createdBy}</td>
-                  <td>
-                    <button onClick={() => alert(`Edit ${comm._id}`)}>
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(comm._id)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {communities.length === 0 && (
+          {/* Content area */}
+          <div className="cm-content">
+            {/* Add Form */}
+            <div className="cm-add-form">
+              <input
+                  type="text"
+                  placeholder="Name"
+                  value={newComm.name}
+                  onChange={(e) => setNewComm({ ...newComm, name: e.target.value })}
+              />
+              <input
+                  type="text"
+                  placeholder="Description"
+                  value={newComm.description}
+                  onChange={(e) =>
+                      setNewComm({ ...newComm, description: e.target.value })
+                  }
+              />
+              <input
+                  type="text"
+                  placeholder="Channels (comma separated)"
+                  value={newComm.channels}
+                  onChange={(e) =>
+                      setNewComm({ ...newComm, channels: e.target.value })
+                  }
+              />
+              <input
+                  type="text"
+                  placeholder="Created By"
+                  value={newComm.createdBy}
+                  onChange={(e) =>
+                      setNewComm({ ...newComm, createdBy: e.target.value })
+                  }
+              />
+              <button onClick={handleAddCommunity}>Add Community</button>
+            </div>
+
+            {/* Table Container (expands to fill available space) */}
+            <div className="cm-table-container">
+              <table className="cm-table">
+                <thead>
                 <tr>
-                  <td colSpan="6">No communities available</td>
+                  <th>_id</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Channels</th>
+                  <th>Created By</th>
+                  <th>Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                {communities.map((comm) => (
+                    <tr key={comm._id}>
+                      <td>{comm._id}</td>
+                      <td>{comm.name}</td>
+                      <td>{comm.description}</td>
+                      <td>{comm.channels.join(', ')}</td>
+                      <td>{comm.createdBy}</td>
+                      <td>
+                        <button onClick={() => alert(`Edit ${comm._id}`)}>
+                          Edit
+                        </button>
+                        <button onClick={() => handleDelete(comm._id)}>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                ))}
+                {communities.length === 0 && (
+                    <tr>
+                      <td colSpan="6">No communities available</td>
+                    </tr>
+                )}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

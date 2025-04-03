@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* Overall page container: Sidebar + Main Container */
+/* Page container: Sidebar + Main Container */
 .community-management-page {
   display: flex;
   width: 100%;
@@ -10,84 +10,76 @@
   overflow: hidden;
 }
 
-/* Main container for top bar and content */
+/* Main container: top bar + content */
 .community-management-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 250px; /* Default margin for expanded sidebar */
+  margin-left: 250px; /* wide sidebar */
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-/* When sidebar is collapsed, adjust the main container */
+/* If sidebar is collapsed */
 .sidebar.collapsed ~ .community-management-container {
   margin-left: 80px;
   width: calc(100% - 80px);
 }
 
-/* Elevated Top Bar */
+/* Top Bar */
 .cm-topbar {
   display: flex;
   align-items: center;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
 }
-
-/* Menu Button in Top Bar */
-.cm-menu-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-right: 1rem;
-}
-.cm-menu-btn img {
-  width: 24px;
-  height: 24px;
-}
-
-/* Home Button in Top Bar */
+/* Menu & Home Buttons */
 .cm-home-btn {
-  margin-right: 1rem;
+  margin-right: auto;
   display: inline-block;
 }
+
 .cm-home-btn img {
   width: 24px;
   height: 24px;
   cursor: pointer;
 }
 
-/* Back Button */
-.cm-back-btn {
-  background-color: transparent;
+/* Menu button can appear next, then the heading. */
+.cm-menu-btn {
+  background: none;
   border: none;
-  color: #333;
-  font-size: 16px;
   cursor: pointer;
-  margin-right: auto;
-  padding: 0.25rem 0.75rem;
-  transition: background-color 0.2s ease;
-}
-.cm-back-btn:hover {
-  background-color: #f2f2f2;
+  margin-right: 2rem; /* or adjust as needed */
 }
 
-/* Top Bar Heading */
+.cm-menu-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Heading can be allowed to flex: 0 if you want it near the menu,
+   or flex: 1 with text-align: center if you want it centered. */
 .cm-topbar h2 {
+  flex: 1;              /* This pushes the heading to the center */
   font-size: 24px;
   font-weight: 600;
   margin: 0;
-  padding-right: 1rem;
+  text-align: center;
 }
 
 /* Content area below top bar */
 .cm-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
-/* Add-Form styling */
+/* Add Form */
 .cm-add-form {
   display: flex;
   gap: 12px;
@@ -98,6 +90,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
+  flex: 1;
 }
 .cm-add-form button {
   background-color: #5874C6;
@@ -112,15 +105,24 @@
   background-color: #4f65b2;
 }
 
-/* Enhanced Table */
+/* Table container: expands to fill space */
+.cm-table-container {
+  flex: 1;
+  min-height: 600px;
+  overflow-y: auto;
+}
+
+/* Table styling: big, business admin look */
 .cm-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 16px;
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  table-layout: fixed;
+  min-width: 900px;
 }
 .cm-table thead {
   background: linear-gradient(90deg, #4f65b2 0%, #5874C6 100%);
@@ -130,25 +132,34 @@
 .cm-table td {
   padding: 12px;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
 }
 .cm-table thead th {
   font-weight: 600;
 }
 .cm-table tbody tr {
   border-bottom: 1px solid #eee;
+  height: 60px;
 }
 .cm-table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 100%);
+  background: linear-gradient(90deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.04) 100%);
+}
+/* Action buttons in the last cell */
+.cm-table tbody td:last-child {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .cm-table tbody button {
   background-color: #eee;
   border: none;
-  padding: 6px 12px;
+  padding: 6px 10px;
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 13px;
+  flex: 0 1 auto;
 }
 .cm-table tbody button:hover {
   background-color: #ddd;
@@ -158,7 +169,7 @@
   color: #999;
 }
 
-/* Responsive Adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   .cm-topbar h2 {
     font-size: 20px;

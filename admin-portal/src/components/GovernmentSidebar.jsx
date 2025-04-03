@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Sidebar.css';
+import '../styles/Sidebar.css'; // You can reuse your Sidebar.css or create a GovernmentSidebar.css if needed
 import logoImage from '../assets/loginImage.png';
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const GovernmentSidebar = ({ isOpen, toggleSidebar }) => {
     const menuItems = [
-        { icon: 'Crowd.svg', label: 'Community Management', path: '/community-management' },
-        { icon: 'channel-management.svg', label: 'Channel Management', path: '/channel-management' },
-        { icon: 'query-reports.svg', label: 'Reports & Suggestions', path: '/reports' },
-        { icon: 'announcements.svg', label: 'Announcements & Notifications', path: '/announcements' },
-        { icon: 'user-management.svg', label: 'User Management', path: '/user-management' },
-        { icon: 'Settings.svg', label: 'Settings', path: '/settings' }
+
+        { icon: 'reports.svg', label: 'Reports & Suggestions', path: '/gov-reports' },
+        { icon: 'announcements.svg', label: 'Announcements', path: '/gov-announcements' },
+        { icon: 'channels.svg', label: 'Channels', path: '/gov-channels' },
+        { icon: 'notifications.svg', label: 'Notifications', path: '/gov-notifications' },
+        { icon: 'team.svg', label: 'Team', path: '/gov-team' }
     ];
 
     return (
@@ -19,7 +19,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 <button className="menu-btn" onClick={toggleSidebar}>
                     <img src="/icons/menu.svg" alt="Menu Icon" className="menu-icon" />
                 </button>
-                <Link to="/dashboard" className="sidebar-logo">
+                <Link to="/government" className="sidebar-logo">
                     <img src={logoImage} alt="Logo" className="logo-image" />
                 </Link>
             </div>
@@ -47,4 +47,4 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     );
 };
 
-export default Sidebar;
+export default GovernmentSidebar;

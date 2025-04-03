@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Sora:wght@400;600&display=swap');
+
+/* Government Topbar Base Styles */
+.government-topbar {
+    position: fixed;
+    top: 0;
+    left: 250px; /* Default expanded sidebar width */
+    width: calc(100% - 250px);
+    height: 60px; /* Topbar height */
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+/* Government Topbar left section: toggle button, government logo and title */
+.government-topbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 16px;
+}
+
+.menu-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.government-logo {
+    width: 40px;
+    height: auto;
+    margin-right: 1rem;
+}
+
+.government-topbar h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Government Topbar middle section: search input */
+.government-topbar-middle {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-input {
+    width: 50%;
+    max-width: 400px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fafafa;
+}
+
+/* Government Topbar right section: notifications and user info */
+.government-topbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.notification-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 16px;
+}
+
+.notif-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+}
+
+.user-info span {
+    margin-right: 8px;
+}
+
+.account-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Adjust the government topbar when the sidebar is collapsed.
+   Assumes the sidebar element is a sibling preceding the topbar.
+   When collapsed, the sidebar width is 64px. */
+.sidebar.collapsed ~ .government-topbar {
+    left: 64px;
+    width: calc(100% - 64px);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .government-topbar {
+        padding: 0 10px;
+    }
+    .government-topbar h1 {
+        font-size: 20px;
+    }
+    .search-input {
+        width: 60%;
+        max-width: 300px;
+    }
+}
