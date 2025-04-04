@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Sora&display=swap');
+
+.gov-announcement-page {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    overflow: hidden;
+}
+
+.gov-announcement-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+}
+
+/* When sidebar is collapsed */
+.sidebar.collapsed ~ .gov-announcement-container {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* Top Bar */
+.ga-topbar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.ga-home-btn {
+    margin-right: 2rem;
+    padding-right: 1rem;
+    border-right: 1px solid rgba(0,0,0,0.1);
+}
+
+.ga-home-btn img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.ga-topbar h2 {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+}
+
+/* Content Area */
+.ga-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Announcement Channel Styles */
+.ac-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.ac-header h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.new-announcement-btn {
+    background-color: #5874C6;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.new-announcement-btn:hover {
+    background-color: #4f65b2;
+}
+
+.ac-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1rem;
+}
+
+.ac-tab {
+    padding: 8px 16px;
+    border: none;
+    background: #f5f5f5;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.ac-tab.active,
+.ac-tab:hover {
+    background-color: #5874C6;
+    color: #fff;
+}
+
+.ac-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ac-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+.ac-item h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 18px;
+}
+
+.ac-item p {
+    margin: 0 0 0.5rem 0;
+    font-size: 16px;
+}
+
+.ac-meta {
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.modal-actions button {
+    background-color: #5874C6;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-actions button:hover {
+    background-color: #4f65b2;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .gov-announcement-container {
+        margin-left: 200px;
+    }
+    .ga-topbar h2 {
+        font-size: 20px;
+    }
+    .ga-content {
+        padding: 0.75rem;
+    }
+    .ac-header h3 {
+        font-size: 20px;
+    }
+    .ac-tab,
+    .new-announcement-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+    .ac-item h4 {
+        font-size: 16px;
+    }
+    .ac-item p,
+    .ac-meta {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .gov-announcement-container {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+    .ga-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.5rem 0.75rem;
+    }
+    .ga-topbar h2 {
+        font-size: 18px;
+        width: 100%;
+        text-align: left;
+        margin-top: 0.5rem;
+    }
+    .ga-home-btn {
+        margin-right: 0;
+        padding-right: 0;
+        border-right: none;
+    }
+    .ga-content {
+        padding: 0.5rem;
+    }
+    .ac-header h3 {
+        font-size: 16px;
+    }
+    .ac-tab,
+    .new-announcement-btn {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+    .ac-item h4 {
+        font-size: 14px;
+    }
+    .ac-item p,
+    .ac-meta {
+        font-size: 12px;
+    }
+    .modal input,
+    .modal textarea,
+    .modal select {
+        font-size: 12px;
+    }
+    .modal-actions button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}

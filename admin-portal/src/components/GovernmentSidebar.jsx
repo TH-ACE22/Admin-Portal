@@ -9,7 +9,7 @@ const GovernmentSidebar = ({ isOpen, toggleSidebar }) => {
         { icon: 'reports.svg', label: 'Reports & Suggestions', path: '/gov-reports' },
         { icon: 'announcements.svg', label: 'Announcements', path: '/gov-announcements' },
         { icon: 'channels.svg', label: 'Channels', path: '/gov-channels' },
-        { icon: 'notifications.svg', label: 'Notifications', path: '/gov-notifications' },
+        { icon: 'notification.svg', label: 'Notifications', path: '/gov-notifications' },
         { icon: 'team.svg', label: 'Team', path: '/gov-team' }
     ];
 
