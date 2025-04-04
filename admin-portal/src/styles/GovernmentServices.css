@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+/* Root Variables (adjust or extend as needed) */
+:root {
+    --primary-gradient-start: #4f65b2;
+    --primary-gradient-end: #5874C6;
+    --header-text-color: #fff;
+    --row-border-color: #eee;
+    --hover-background: rgba(0, 0, 0, 0.04);
+    --button-bg: #f5f5f5;
+    --button-bg-hover: #e0e0e0;
+    --highlight-color: #ff6f61;
+    --card-bg: #fff;
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    --body-bg: #f9f9f9;
+    --text-color: #333;
+    --font-family: 'Inter', sans-serif;
+    --action-color: var(--primary-gradient-start);
+}
+
+/* Base Reset/Defaults */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--body-bg);
+    font-family: var(--font-family);
+    color: var(--text-color);
+}
+
+/* Container for Government Services Component */
+.gov-services-section {
+    padding: 1.5rem;
+    background: var(--body-bg);
+    min-height: 100vh;
+}
+
+.gov-services-section h3,
+.gov-services-section h4 {
+    font-family: var(--font-family);
+    color: var(--text-color);
+}
+
+/* Form Card */
+.gov-servant-form {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 1.5rem;
+}
+.gov-servant-form h4 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.gov-servant-form label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--text-color);
+}
+.gov-servant-form input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+}
+.gov-servant-form input:focus {
+    border-color: var(--action-color);
+    outline: none;
+}
+.gov-servant-form button {
+    width: 100%;
+    background-color: var(--action-color);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.gov-servant-form button:hover {
+    background-color: var(--primary-gradient-end);
+    transform: translateY(-2px);
+}
+
+/* Table Card */
+.table-container {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    overflow-x: auto;
+}
+.table-container h4 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+.rs-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9375rem;
+    table-layout: auto;
+}
+.rs-table thead {
+    background: linear-gradient(90deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+    color: var(--header-text-color);
+}
+.rs-table th, .rs-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+    transition: background-color 0.3s ease;
+}
+.rs-table thead th {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.75rem;
+}
+.rs-table tbody tr {
+    border-bottom: 1px solid var(--row-border-color);
+}
+.rs-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+.rs-table tbody tr:hover {
+    background: var(--hover-background);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gov-services-section {
+        padding: 1rem;
+    }
+    .gov-servant-form,
+    .table-container {
+        margin-bottom: 1.5rem;
+    }
+}

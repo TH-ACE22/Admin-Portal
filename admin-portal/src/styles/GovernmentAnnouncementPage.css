@@ -198,6 +198,80 @@
 .modal-actions button:hover {
     background-color: #4f65b2;
 }
+/* make modal wider & more padded */
+.modal.large {
+    max-width: 600px;
+    width: 90%;
+    padding: 2rem;
+}
+
+/* header with close button */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* arrange form fields in two columns */
+.modal-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem 2rem;
+}
+.modal-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.modal-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* actions bar */
+.modal-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+.modal-actions button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+
+/* make overlay darker */
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* disable background scroll while modal open */
+body.modal-open {
+    overflow: hidden;
+}
+
 
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
@@ -275,4 +349,123 @@
         font-size: 12px;
         padding: 6px 10px;
     }
+    /* Add this below your existing styles or replace modal/input-related blocks */
+
+    .modal label {
+        display: block;
+        font-weight: 600;
+        margin-top: 12px;
+        text-align: left;
+        font-size: 14px;
+        color: #444;
+    }
+
+    .modal input:focus,
+    .modal textarea:focus,
+    .modal select:focus {
+        border-color: #5874C6;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(88, 116, 198, 0.2);
+    }
+
+    .modal img {
+        margin-top: 10px;
+        max-width: 100%;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+    }
+
+    /* Optional: improve button spacing */
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    /* Announcement image in .ac-item */
+    .ac-item img {
+        border-radius: 4px;
+        max-width: 100%;
+        height: auto;
+        margin-top: 0.5rem;
+        border: 1px solid #ccc;
+    }
+
+    /* Add light hover card effect */
+    .ac-item {
+        transition: box-shadow 0.2s ease;
+    }
+    .ac-item:hover {
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    /* Smooth modal animation (optional) */
+    .modal {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+}
+/* Add this below your existing styles or replace modal/input-related blocks */
+
+.modal label {
+    display: block;
+    font-weight: 600;
+    margin-top: 12px;
+    text-align: left;
+    font-size: 14px;
+    color: #444;
+}
+
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+    border-color: #5874C6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(88, 116, 198, 0.2);
+}
+
+.modal img {
+    margin-top: 10px;
+    max-width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* Optional: improve button spacing */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Announcement image in .ac-item */
+.ac-item img {
+    border-radius: 4px;
+    max-width: 100%;
+    height: auto;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+}
+
+/* Add light hover card effect */
+.ac-item {
+    transition: box-shadow 0.2s ease;
+}
+.ac-item:hover {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* Smooth modal animation (optional) */
+.modal {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }

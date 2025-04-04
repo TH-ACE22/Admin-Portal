@@ -1,49 +1,62 @@
+// src/components/GovernmentSidebar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/Sidebar.css'; // You can reuse your Sidebar.css or create a GovernmentSidebar.css if needed
+import { NavLink, useNavigate } from 'react-router-dom';
+import '../styles/Sidebar.css'; // or a dedicated GovernmentSidebar.css
 import logoImage from '../assets/loginImage.png';
 
 const GovernmentSidebar = ({ isOpen, toggleSidebar }) => {
-    const menuItems = [
+    const navigate = useNavigate();
 
+    const menuItems = [
         { icon: 'reports.svg', label: 'Reports & Suggestions', path: '/gov-reports' },
-        { icon: 'announcements.svg', label: 'Announcements', path: '/gov-announcements' },
-        { icon: 'channels.svg', label: 'Channels', path: '/gov-channels' },
-        { icon: 'notification.svg', label: 'Notifications', path: '/gov-notifications' },
-        { icon: 'team.svg', label: 'Team', path: '/gov-team' }
+        { icon: 'announcements.svg', label: 'Announcements',      path: '/gov-announcements' },
+        { icon: 'channels.svg',      label: 'Channels',           path: '/gov-channels' },
+        { icon: 'notification.svg',  label: 'Notifications',      path: '/gov-notifications' },
+        { icon: 'team.svg',          label: 'Team',               path: '/gov-team' }
     ];
 
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate('/login', { replace: true });
+    };
+
     return (
-        <div className={`sidebar ${!isOpen ? 'collapsed' : ''}`}>
+        <aside className={`sidebar ${isOpen ? '' : 'collapsed'}`}>
             <div className="sidebar-top">
                 <button className="menu-btn" onClick={toggleSidebar}>
-                    <img src="/icons/menu.svg" alt="Menu Icon" className="menu-icon" />
+                    <img src="/icons/menu.svg" alt="Toggle Menu" className="menu-icon" />
                 </button>
-                <Link to="/government" className="sidebar-logo">
+                <NavLink to="/government-dashboard" className="sidebar-logo">
                     <img src={logoImage} alt="Logo" className="logo-image" />
-                </Link>
+                    {isOpen && <span className="logo-text">Gov Portal</span>}
+                </NavLink>
             </div>
 
             <nav className="sidebar-nav">
                 <ul>
-                    {menuItems.map((item, index) => (
-                        <li key={index}>
-                            <Link to={item.path} className="sidebar-btn">
-                                <img src={`/icons/${item.icon}`} alt={item.label} className="btn-icon" />
-                                <span>{item.label}</span>
-                            </Link>
+                    {menuItems.map(({ icon, label, path }) => (
+                        <li key={path}>
+                            <NavLink
+                                to={path}
+                                className={({ isActive }) =>
+                                    `sidebar-btn${isActive ? ' active' : ''}`
+                                }
+                            >
+                                <img src={`/icons/${icon}`} alt={label} className="btn-icon" />
+                                {isOpen && <span className="btn-label">{label}</span>}
+                            </NavLink>
                         </li>
                     ))}
                 </ul>
             </nav>
 
             <div className="sidebar-bottom">
-                <button className="logout-btn">
-                    <img src="/icons/Logout.svg" alt="Logout Icon" className="btn-icon" />
-                    <span>Log Out</span>
+                <button className="logout-btn" onClick={handleLogout}>
+                    <img src="/icons/Logout.svg" alt="Logout" className="btn-icon" />
+                    {isOpen && <span className="btn-label">Log Out</span>}
                 </button>
             </div>
-        </div>
+        </aside>
     );
 };
 

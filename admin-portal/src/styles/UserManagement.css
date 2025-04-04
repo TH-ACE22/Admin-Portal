@@ -133,12 +133,22 @@
 
 .um-table th,
 .um-table td {
-    padding: 16px;
-    text-align: left;
-    vertical-align: middle;
-    white-space: normal;
-    transition: background-color 0.3s ease;
+    font-size: 14px;             /* Smaller font for better fit */
+    padding: 10px 12px;          /* Reduced padding */
+    white-space: normal;         /* Allow text wrapping */
+    word-break: break-word;      /* Break long words */
+    overflow-wrap: break-word;
+    min-width: 100px;            /* Prevent squashing */
+    max-width: 220px;            /* Prevent overflow */
+    line-height: 1.4;            /* Improve vertical spacing */
 }
+
+/* Reduce button padding inside table rows */
+.um-table tbody button {
+    padding: 6px 10px;
+    font-size: 13px;
+}
+
 
 .um-table thead th {
     font-weight: 600;
@@ -268,17 +278,42 @@
 }
 
 /* Responsive Adjustments */
+/* Compact and responsive table cell styling */
+.um-table th,
+.um-table td {
+    font-size: 13px;               /* More compact */
+    padding: 6px 10px;             /* Tighter spacing */
+    min-width: 80px;
+    max-width: 180px;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
+}
+
+/* Reduce button padding inside table rows */
+.um-table tbody button {
+    padding: 6px 10px;
+    font-size: 13px;
+}
+
+/* Adjust layout on small screens */
 @media (max-width: 768px) {
-    .um-topbar h2 {
-        font-size: 20px;
-    }
-    .um-filter {
-        flex-direction: column;
-        gap: 8px;
-    }
     .um-table th,
     .um-table td {
-        font-size: 14px;
-        padding: 12px;
+        font-size: 12.5px;
+        padding: 8px 10px;
+        min-width: 80px;
+        max-width: 180px;
+    }
+
+    .um-topbar h2 {
+        font-size: 18px;
+    }
+
+    .um-filter {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
+

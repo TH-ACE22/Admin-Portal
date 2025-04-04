@@ -1,10 +1,9 @@
-// src/pages/Settings.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import AdminRoles from '../components/AdminRoles';
 import ProfilePreferences from '../components/ProfilePreferences';
-import GovernmentServices from '../components/GovernmentServices';
+import GovernmentOfficials from '../components/GovernmentOfficials.jsx';
 import '../styles/Settings.css';
 
 const Settings = () => {
@@ -41,17 +40,17 @@ const Settings = () => {
                         Profile & Preferences
                     </button>
                     <button
-                        className={activeTab === 'govServices' ? 'active' : ''}
-                        onClick={() => setActiveTab('govServices')}
+                        className={activeTab === 'govOfficials' ? 'active' : ''}
+                        onClick={() => setActiveTab('govOfficials')}
                     >
-                        Government Services
+                        Government Officials
                     </button>
                 </div>
 
                 <div className="settings-content">
                     {activeTab === 'adminRoles' && <AdminRoles />}
                     {activeTab === 'preferences' && <ProfilePreferences />}
-                    {activeTab === 'govServices' && <GovernmentServices />}
+                    {activeTab === 'govOfficials' && <GovernmentOfficials />}
                 </div>
             </div>
         </div>

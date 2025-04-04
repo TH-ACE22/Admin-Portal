@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* Root Variables (adjust or extend as needed) */
+/* Root Variables */
 :root {
     --primary-gradient-start: #4f65b2;
     --primary-gradient-end: #5874C6;
@@ -17,12 +17,10 @@
     --text-color: #333;
     --font-family: 'Inter', sans-serif;
 
-    /* For the big 'Save Changes' button, we can pick from your existing palette */
-    /* Here, we'll use primary-gradient-start as a solid color to replicate the screenshot. */
     --action-color: var(--primary-gradient-start);
 }
 
-/* Base Reset/Defaults */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -35,28 +33,28 @@ body {
     color: var(--text-color);
 }
 
-/* Page Container */
+/* Layout */
 .settings-page {
     display: flex;
     width: 100%;
-    min-height: 100vh; /* allow scrolling if content is long */
+    min-height: 100vh;
     overflow: hidden;
 }
 
-/* Main Settings Container */
 .settings-container {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 250px; /* or your sidebar width */
+    margin-left: 250px;
     transition: margin-left 0.3s ease, width 0.3s ease;
 }
+
 .sidebar.collapsed ~ .settings-container {
     margin-left: 80px;
     width: calc(100% - 80px);
 }
 
-/* Top Bar */
+/* Topbar */
 .settings-topbar {
     display: flex;
     align-items: center;
@@ -65,6 +63,7 @@ body {
     padding: 1rem 2rem;
     margin-bottom: 1rem;
 }
+
 .settings-topbar h2 {
     flex: 1;
     font-size: 24px;
@@ -72,26 +71,26 @@ body {
     text-align: center;
     color: var(--text-color);
 }
+
 .settings-home-btn {
     margin-right: 2rem;
     padding-right: 1rem;
     border-right: 1px solid rgba(0,0,0,0.1);
     display: inline-block;
 }
-.settings-home-btn img {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
-.settings-menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-right: 1rem;
-}
+
+.settings-home-btn img,
 .settings-menu-btn img {
     width: 24px;
     height: 24px;
+    cursor: pointer;
+}
+
+.settings-menu-btn {
+    background: none;
+    border: none;
+    margin-right: 1rem;
+    cursor: pointer;
 }
 
 /* Tabs */
@@ -100,6 +99,7 @@ body {
     gap: 1rem;
     margin: 0 2rem 1.5rem;
 }
+
 .settings-tabs button {
     background-color: #f2f2f2;
     border: none;
@@ -110,75 +110,152 @@ body {
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 .settings-tabs button:hover {
     background-color: #e0e0e0;
 }
+
 .settings-tabs button.active {
     background-color: var(--action-color);
     color: #fff;
 }
 
-/* Main Content */
+/* Content */
 .settings-content {
     flex: 1;
-    padding: 0 2rem 2rem; /* side padding and bottom spacing */
+    padding: 0 2rem 2rem;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-/* Section Wrappers */
+/* Section Styling */
 .section {
     background: var(--card-bg);
     border-radius: 12px;
     box-shadow: var(--card-shadow);
     padding: 1.5rem;
 }
+
 .section h3 {
     margin-bottom: 1.5rem;
     font-size: 20px;
     font-weight: 600;
-    color: var(--text-color);
 }
-
-/* Form Styles for Profile & Government Services */
-.gov-service-forms,
-.gov-servant-form,
-.preferences-section,
-.profile-section,
-.theme-section {
-    margin-bottom: 1.5rem;
-}
-
-.gov-services-form input,
-.gov-services-form textarea,
-.gov-servant-form input,
-.section input[type="text"],
-.section input[type="email"],
-.section input[type="date"],
-.section select {
+/* Fix password selector and unify inputs */
+.gov-official-form input[type="text"],
+.gov-official-form input[type="email"],
+.gov-official-form input[type="password"],
+.gov-official-form input[type="date"],
+.gov-official-form select,
+.gov-official-form textarea {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid #ddd;
-    border-radius: 12px; /* larger rounding to match the screenshot */
+    border-radius: 12px;
     font-size: 15px;
-    transition: border-color 0.3s ease;
     margin-bottom: 0.75rem;
+    transition: border-color 0.3s ease;
 }
-.section input:focus,
-.section select:focus,
-.gov-services-form textarea:focus {
+
+.gov-official-form input:focus,
+.gov-official-form select:focus,
+.gov-official-form textarea:focus {
     border-color: var(--action-color);
     outline: none;
 }
 
-/* "Save" or "Create" Buttons (large, rounded) */
+/* Channels drag-and-drop container */
+.channels-container {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+/* Each side panel */
+.channels-list {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+    padding: 10px;
+    min-height: 150px;
+}
+
+/* List headers */
+.channels-list h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* The <ul> itself */
+.channels-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Each draggable <li> */
+.channels-list li {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: grab;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.channels-list li:hover {
+    background: #f2f2f2;
+}
+
+.channels-list li:active {
+    cursor: grabbing;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Table adjustments (if needed) */
+.table-container {
+    margin-top: 2rem;
+}
+
+/* Ensure the submit button spans nicely */
+.gov-official-form button[type="submit"] {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+/* Form Input Styling */
+.gov-official-form input,
+.gov-official-form textarea,
+.section input[type="text"],
+.section input[type="email"],
+.section input[type="date"],
+.section input[type = "password"],
+.section select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 15px;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.3s ease;
+}
+
+.section input:focus,
+.section select:focus,
+textarea:focus {
+    border-color: var(--action-color);
+    outline: none;
+}
+
+/* Buttons */
 button[type="submit"],
-.profile-section button,
-.theme-section button,
-.gov-services-form button,
-.gov-servant-form button {
+.section button {
     display: inline-block;
     background-color: var(--action-color);
     color: #fff;
@@ -189,26 +266,23 @@ button[type="submit"],
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
 button[type="submit"]:hover,
-.profile-section button:hover,
-.theme-section button:hover,
-.gov-services-form button:hover,
-.gov-servant-form button:hover {
+.section button:hover {
     background-color: var(--primary-gradient-end);
     transform: translateY(-2px);
 }
 
-/* Example for "Save Changes" alignment from the screenshot:
-   You can place it at the bottom-right if desired. */
 .ps-save-btn {
     margin-top: 1rem;
-    align-self: flex-end; /* if inside a flex container */
+    align-self: flex-end;
 }
 
-/* Table Container & Table (unchanged from your existing style) */
+/* Tables */
 .table-container {
     overflow-x: auto;
 }
+
 .rs-table {
     width: 100%;
     border-collapse: separate;
@@ -218,50 +292,120 @@ button[type="submit"]:hover,
     border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--card-shadow);
-    table-layout: auto;
 }
+
 .rs-table thead {
     background: linear-gradient(90deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
     color: var(--header-text-color);
 }
+
 .rs-table th,
 .rs-table td {
     padding: 16px;
     text-align: left;
     vertical-align: middle;
-    transition: background-color 0.3s ease;
     white-space: normal;
+    transition: background-color 0.3s ease;
 }
+
 .rs-table thead th {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
 .rs-table tbody tr {
     border-bottom: 1px solid var(--row-border-color);
-    transition: background-color 0.3s ease;
 }
+
 .rs-table tbody tr:nth-child(even) {
     background: #fafafa;
 }
+
 .rs-table tbody tr:hover {
     background: var(--hover-background);
 }
 
-/* Responsive Adjustments */
+/* Responsive */
 @media (max-width: 768px) {
     .settings-topbar h2 {
         font-size: 20px;
     }
+
     .settings-tabs {
         flex-wrap: wrap;
         gap: 0.5rem;
         margin: 0 1rem 1rem;
     }
+
     .settings-content {
         padding: 0 1rem 1rem;
     }
+
     .section {
         padding: 1rem;
     }
+}
+/* Enhanced Government Officials table */
+.gov-official-section .table-container {
+    margin-top: 1.5rem;
+    max-height: 400px;           /* adjust as needed */
+    overflow-y: auto;
+    border: 1px solid var(--row-border-color);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+}
+
+.gov-official-section .rs-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;         /* make columns share space evenly */
+}
+
+.gov-official-section .rs-table thead {
+    position: sticky;
+    top: 0;
+    background: var(--primary-gradient-start);
+    color: var(--header-text-color);
+    z-index: 2;
+}
+
+.gov-official-section .rs-table th,
+.gov-official-section .rs-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+
+.gov-official-section .rs-table tbody tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.gov-official-section .rs-table tbody tr:hover {
+    background: var(--hover-background);
+}
+
+.gov-official-section .rs-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+/* Scrollbar styling for WebKit */
+.gov-official-section .table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.gov-official-section .table-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.gov-official-section .table-container::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 4px;
+}
+
+.gov-official-section .table-container::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
 }

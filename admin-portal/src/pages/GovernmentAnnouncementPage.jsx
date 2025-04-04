@@ -1,91 +1,169 @@
 // src/pages/GovernmentAnnouncementPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import GovernmentSidebar from '../components/GovernmentSidebar';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/GovernmentAnnouncementPage.css';
 
-const GovernmentAnnouncementPage = () => {
-    // Sample announcement data
-    const initialAnnouncements = [
-        {
-            id: 'ann1',
-            title: 'New Feature Release',
-            content: 'We are excited to introduce new features today!',
-            status: 'Active',
-            timestamp: '2023-05-01T10:00:00Z',
-            reactions: { likes: 10, dislikes: 2 },
-            alertType: 'Info'
-        },
-        {
-            id: 'ann2',
-            title: 'Scheduled Maintenance',
-            content: 'Maintenance is scheduled for 2023-05-05. Expect downtime.',
-            status: 'Scheduled',
-            timestamp: '2023-05-03T09:00:00Z',
-            reactions: { likes: 5, dislikes: 0 },
-            alertType: 'Warning'
-        },
-        {
-            id: 'ann3',
-            title: 'Old Announcement',
-            content: 'This announcement has now expired.',
-            status: 'Expired',
-            timestamp: '2023-04-20T15:30:00Z',
-            reactions: { likes: 8, dislikes: 1 },
-            alertType: 'Info'
-        }
-    ];
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8081';
 
-    const [announcements, setAnnouncements] = useState(initialAnnouncements);
-    const [selectedTab, setSelectedTab] = useState('Active');
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const GovernmentAnnouncementPage = () => {
+    const [announcements, setAnnouncements] = useState([]);
+    const [allChannels, setAllChannels]     = useState([]);
+    const [selectedTab, setSelectedTab]     = useState('Active');
+    const [isModalOpen, setIsModalOpen]     = useState(false);
+    const [sidebarOpen, setSidebarOpen]     = useState(true);
+    const [loading, setLoading]             = useState(true);
+
     const [newAnnouncement, setNewAnnouncement] = useState({
+        channelId: '',
         title: '',
         content: '',
-        status: 'Active'
+        status: 'Active',
+        scheduledAt: '',
+        imageUrl: ''
     });
-    const [sidebarOpen, setSidebarOpen] = useState(true);
 
-    const handleToggleSidebar = () => setSidebarOpen((prev) => !prev);
+    // lock scroll when modal open
+    useEffect(() => {
+        document.body.classList.toggle('modal-open', isModalOpen);
+    }, [isModalOpen]);
 
-    const filteredAnnouncements = announcements.filter(
-        (ann) => ann.status === selectedTab
-    );
+    // initial data fetch: channels + announcements
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                toast.error('Authentication required.');
+                setLoading(false);
+                return;
+            }
 
-    const handleCreateAnnouncement = () => {
-        const newAnn = {
-            id: `ann-${Date.now()}`,
-            title: newAnnouncement.title,
-            content: newAnnouncement.content,
-            status: newAnnouncement.status,
-            timestamp: new Date().toISOString(),
-            reactions: { likes: 0, dislikes: 0 },
-            alertType: 'Info'
+            try {
+                const [chRes, anRes] = await Promise.all([
+                    axios.get(`${API_BASE}/channels`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    }),
+                    axios.get(`${API_BASE}/announcements`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    })
+                ]);
+
+                setAllChannels(chRes.data || []);
+                setAnnouncements(anRes.data || []);
+
+                // default to first channel if any
+                if (chRes.data?.length) {
+                    setNewAnnouncement(n => ({ ...n, channelId: chRes.data[0].id }));
+                }
+            } catch (err) {
+                console.error(err);
+                toast.error('Failed to load channels or announcements.');
+            } finally {
+                setLoading(false);
+            }
         };
-        setAnnouncements([newAnn, ...announcements]);
-        setNewAnnouncement({ title: '', content: '', status: 'Active' });
-        setIsModalOpen(false);
+
+        fetchData();
+    }, []);
+
+    const handleToggleSidebar = () => setSidebarOpen(v => !v);
+
+    const handleCreate = () => {
+        const { channelId, title, content, status, scheduledAt, imageUrl } = newAnnouncement;
+        if (!channelId || !title.trim() || !content.trim()) {
+            toast.warn('Please choose a channel and fill Title & Content.');
+            return;
+        }
+
+        const token = localStorage.getItem('accessToken');
+        axios.post(`${API_BASE}/announcements`, {
+            channelId,
+            title,
+            content,
+            status,
+            scheduledAt: scheduledAt || null,
+            imageUrl,
+            timestamp: new Date().toISOString()
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+            .then(res => {
+                setAnnouncements([res.data, ...announcements]);
+                toast.success('Announcement posted!');
+                setIsModalOpen(false);
+                // reset form
+                setNewAnnouncement({
+                    channelId: allChannels[0]?.id || '',
+                    title: '',
+                    content: '',
+                    status: 'Active',
+                    scheduledAt: '',
+                    imageUrl: ''
+                });
+            })
+            .catch(err => {
+                console.error(err);
+                toast.error('Failed to post announcement.');
+            });
     };
+
+    const handleImageUpload = async e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const token = localStorage.getItem('accessToken');
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const { data } = await axios.post(
+                `${API_BASE}/api/v1/images/upload`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            );
+            setNewAnnouncement(n => ({ ...n, imageUrl: data.secure_url || data.url }));
+            toast.success('Image uploaded');
+        } catch {
+            toast.error('Image upload failed');
+        }
+    };
+
+    const getChannelName = id => allChannels.find(c => c.id === id)?.name || '—';
+
+    // only filter by status now
+    const filtered = announcements.filter(a => a.status === selectedTab);
+
+    if (loading) {
+        return <div className="section">Loading…</div>;
+    }
 
     return (
         <div className="gov-announcement-page">
             <GovernmentSidebar isOpen={sidebarOpen} toggleSidebar={handleToggleSidebar} />
             <div className="gov-announcement-container">
                 <div className="ga-topbar">
-                    <Link to="/government" className="ga-home-btn">
+                    <Link to="/government-dashboard" className="ga-home-btn">
                         <img src="/icons/home.svg" alt="Home" />
                     </Link>
                     <h2>Announcements</h2>
                 </div>
+
                 <div className="ga-content">
                     <div className="ac-header">
-                        <h3>List of Latest Announcements</h3>
+                        <h3>Latest Announcements</h3>
                         <button className="new-announcement-btn" onClick={() => setIsModalOpen(true)}>
-                            New Announcement
+                            + New Announcement
                         </button>
                     </div>
+
                     <div className="ac-tabs">
-                        {['Active', 'Scheduled', 'Expired'].map((tab) => (
+                        {['Active', 'Scheduled', 'Expired'].map(tab => (
                             <button
                                 key={tab}
                                 className={`ac-tab ${selectedTab === tab ? 'active' : ''}`}
@@ -95,57 +173,109 @@ const GovernmentAnnouncementPage = () => {
                             </button>
                         ))}
                     </div>
+
                     <div className="ac-list">
-                        {filteredAnnouncements.length > 0 ? (
-                            filteredAnnouncements.map((ann) => (
-                                <div key={ann.id} className="ac-item">
-                                    <h4>{ann.title}</h4>
-                                    <p>{ann.content}</p>
+                        {filtered.length ? (
+                            filtered.map(a => (
+                                <div key={a.id} className="ac-item">
+                                    <h4>{a.title}</h4>
+                                    <p><strong>Channel:</strong> {getChannelName(a.channelId)}</p>
+                                    <p>{a.content}</p>
+                                    {a.imageUrl && (
+                                        <img src={a.imageUrl} alt="attachment" style={{ maxWidth: '100%', marginTop: 8 }} />
+                                    )}
                                     <div className="ac-meta">
-                                        <span>{new Date(ann.timestamp).toLocaleString()}</span>
-                                        <span>
-                      Reactions: 👍 {ann.reactions.likes} 👎 {ann.reactions.dislikes}
-                    </span>
-                                        <span>Alert: {ann.alertType}</span>
+                                        <span>{new Date(a.timestamp).toLocaleString()}</span>
+                                        <span>Status: {a.status}</span>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <p>No announcements available.</p>
+                            <p>No announcements in “{selectedTab}”.</p>
                         )}
                     </div>
 
                     {isModalOpen && (
                         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
-                            <div className="modal" onClick={(e) => e.stopPropagation()}>
-                                <h3>Create New Announcement</h3>
-                                <input
-                                    type="text"
-                                    placeholder="Title"
-                                    value={newAnnouncement.title}
-                                    onChange={(e) =>
-                                        setNewAnnouncement({ ...newAnnouncement, title: e.target.value })
-                                    }
-                                />
-                                <textarea
-                                    placeholder="Content"
-                                    value={newAnnouncement.content}
-                                    onChange={(e) =>
-                                        setNewAnnouncement({ ...newAnnouncement, content: e.target.value })
-                                    }
-                                ></textarea>
-                                <select
-                                    value={newAnnouncement.status}
-                                    onChange={(e) =>
-                                        setNewAnnouncement({ ...newAnnouncement, status: e.target.value })
-                                    }
-                                >
-                                    <option value="Active">Active</option>
-                                    <option value="Scheduled">Scheduled</option>
-                                    <option value="Expired">Expired</option>
-                                </select>
+                            <div className="modal large" onClick={e => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <h3>Create Announcement</h3>
+                                    <button className="close-btn" onClick={() => setIsModalOpen(false)}>×</button>
+                                </div>
+                                <div className="modal-form two-column">
+                                    {/* Left column */}
+                                    <div>
+                                        <label>Channel</label>
+                                        <select
+                                            size={6}
+                                            value={newAnnouncement.channelId}
+                                            onChange={e => setNewAnnouncement(n => ({ ...n, channelId: e.target.value }))}
+                                            style={{ width: '100%', height: 150, fontSize: 14 }}
+                                        >
+                                            {allChannels.map(c => (
+                                                <option key={c.id} value={c.id}>{c.name}</option>
+                                            ))}
+                                        </select>
+
+                                        <label>Status</label>
+                                        <select
+                                            value={newAnnouncement.status}
+                                            onChange={e => {
+                                                const s = e.target.value;
+                                                setNewAnnouncement(n => ({
+                                                    ...n,
+                                                    status: s,
+                                                    scheduledAt: s === 'Scheduled' ? n.scheduledAt : ''
+                                                }));
+                                            }}
+                                        >
+                                            <option value="Active">Active</option>
+                                            <option value="Scheduled">Scheduled</option>
+                                            <option value="Expired">Expired</option>
+                                        </select>
+
+                                        {newAnnouncement.status === 'Scheduled' && (
+                                            <>
+                                                <label>Schedule Date</label>
+                                                <input
+                                                    type="datetime-local"
+                                                    value={newAnnouncement.scheduledAt}
+                                                    onChange={e => setNewAnnouncement(n => ({ ...n, scheduledAt: e.target.value }))}
+                                                />
+                                            </>
+                                        )}
+                                    </div>
+
+                                    {/* Right column */}
+                                    <div>
+                                        <label>Title</label>
+                                        <input
+                                            type="text"
+                                            value={newAnnouncement.title}
+                                            onChange={e => setNewAnnouncement(n => ({ ...n, title: e.target.value }))}
+                                        />
+
+                                        <label>Content</label>
+                                        <textarea
+                                            rows={4}
+                                            value={newAnnouncement.content}
+                                            onChange={e => setNewAnnouncement(n => ({ ...n, content: e.target.value }))}
+                                        />
+
+                                        <label>Attach Image</label>
+                                        <input type="file" onChange={handleImageUpload} />
+                                        {newAnnouncement.imageUrl && (
+                                            <img
+                                                src={newAnnouncement.imageUrl}
+                                                alt="preview"
+                                                style={{ maxWidth: '100%', marginTop: 8 }}
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+
                                 <div className="modal-actions">
-                                    <button onClick={handleCreateAnnouncement}>Post Announcement</button>
+                                    <button onClick={handleCreate}>Post Announcement</button>
                                     <button onClick={() => setIsModalOpen(false)}>Cancel</button>
                                 </div>
                             </div>
@@ -153,6 +283,8 @@ const GovernmentAnnouncementPage = () => {
                     )}
                 </div>
             </div>
+
+            <ToastContainer position="bottom-right" autoClose={3000} />
         </div>
     );
 };

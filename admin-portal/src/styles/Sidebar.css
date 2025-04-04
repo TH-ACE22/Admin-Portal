@@ -1,350 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter&family=Sora&display=swap');
-
-/* Global Variables */
-:root {
-  --primary-gradient-start: #4f65b2;
-  --primary-gradient-end: #5874C6;
-  --header-text-color: #fff;
-  --row-border-color: #eee;
-  --hover-background: rgba(0, 0, 0, 0.04);
-  --button-bg: #f5f5f5;
-  --button-bg-hover: #e0e0e0;
-  --highlight-color: #ff6f61;
-  --card-bg: #fff;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --body-bg: #f9f9f9;
-  --text-color: #333;
-  --font-family: 'Inter', sans-serif;
-}
-
-/* Base Styles */
-html, body, #root {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: var(--font-family);
-  background-color: var(--body-bg);
-  color: var(--text-color);
-  box-sizing: border-box;
-}
-
-* {
-  box-sizing: inherit;
-}
-
-/*
-  SIDEBAR BACKGROUND
-  Use #5874C6 for the sidebar color
-  (instead of the previous lighter blue).
-*/
+/* Sidebar default */
 .sidebar {
-  background-color: #5874C6 !important;
-}
-
-/* Dashboard Container */
-.dashboard-container {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Main Content */
-.main-content {
-  flex: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;                       /* expanded width */
+  background-color: #5874C6;          /* as before */
+  transition: width 0.3s ease;        /* animate width change */
+  overflow: hidden;                   /* hide overflowing text */
   display: flex;
   flex-direction: column;
-  /* Default margin when sidebar is expanded (250px wide) */
-  margin-left: 250px;
-  width: calc(100% - 250px);
-  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-/* When the sidebar is collapsed (80px), adjust main-content layout */
+/* Collapsed state */
+.sidebar.collapsed {
+  width: 80px;                        /* collapsed width */
+}
+
+/* Center the toggle + logo when collapsed */
+.sidebar .sidebar-top {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  justify-content: space-between;
+}
+
+/* Icon-only buttons when collapsed */
+.sidebar .sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  transition: padding 0.3s ease;
+}
+.sidebar.collapsed .sidebar-btn {
+  padding: 0.75rem;
+  justify-content: center;
+}
+
+/* Hide text labels on collapse */
+/* Ensure button text never wraps or overflows */
+.sidebar .sidebar-btn span {
+  display: inline-block;      /* allow width control */
+  max-width: 140px;           /* adjust as needed */
+  white-space: nowrap;        /* prevent wrapping */
+  overflow: hidden;           /* clip overflow */
+  text-overflow: ellipsis;    /* show “…” */
+}
+
+/* Keep icons centered */
+.sidebar .btn-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+/* If you have sub-menus or other text blocks in the sidebar: */
+.sidebar li,
+.sidebar a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Adjust main content to sidebar width */
+.main-content {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
 .sidebar.collapsed ~ .main-content {
   margin-left: 80px;
-  width: calc(100% - 80px);
-}
-
-/* Top Bar offset is assumed to be handled separately
-   if you have a fixed top bar with a certain height.
-   In your code, the .dashboard-body has 2rem padding. */
-.dashboard-body {
-  padding: 2rem;
-  overflow-y: auto;
-}
-
-/* Quick Stats Section */
-.quick-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 24px;
-  margin-bottom: 2rem;
-}
-.stat-card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: var(--card-shadow);
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-.stat-card h3 {
-  font-family: 'Sora', sans-serif;
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-.stat-card p {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-/* Recent Reports/Suggestions */
-.recent-reports {
-  margin-bottom: 2rem;
-}
-.recent-reports h2 {
-  font-size: 22px;
-  margin-bottom: 1rem;
-  font-family: 'Sora', sans-serif;
-}
-.filters {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-.filters select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-/* Reports Table */
-.reports-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--card-bg);
-  border-radius: 8px;
-  box-shadow: var(--card-shadow);
-}
-.reports-table thead {
-  background: linear-gradient(90deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
-  color: var(--header-text-color);
-}
-.reports-table th,
-.reports-table td {
-  padding: 16px;
-  border-bottom: 1px solid var(--row-border-color);
-  text-align: left;
-  font-size: 14px;
-}
-.reports-table tbody tr:hover {
-  background: var(--hover-background);
-}
-
-/* Transparent Oval Buttons */
-
-.transparent-oval-btn {
-  background: transparent;
-  border: 2px solid var(--primary-gradient-start);
-  border-radius: 50px;
-  color: var(--primary-gradient-start);
-  padding: 8px 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  /* Updated to display text vertically */
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-}
-.transparent-oval-btn:hover {
-  background-color: var(--primary-gradient-start);
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-/* Recent Announcements */
-.recent-announcements {
-  margin-bottom: 2rem;
-}
-.recent-announcements h2 {
-  font-size: 22px;
-  margin-bottom: 1rem;
-  font-family: 'Sora', sans-serif;
-}
-.announcements-list {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-.announcement-card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: var(--card-shadow);
-  flex: 1;
-  min-width: 220px;
-  position: relative;
-  transition: transform 0.3s ease;
-}
-.announcement-card:hover {
-  transform: translateY(-3px);
-}
-.announcement-card h3 {
-  font-size: 18px;
-  margin-bottom: 0.5rem;
-  font-family: 'Sora', sans-serif;
-}
-.announcement-card p {
-  font-size: 14px;
-  margin-bottom: 0.5rem;
-}
-.announcement-card .status {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 12px;
-  color: #fff;
-}
-.status.active {
-  background-color: #28a745;
-}
-.status.scheduled {
-  background-color: #ff6f61;
-}
-
-/* Channel Overview */
-.channel-overview h2 {
-  font-size: 22px;
-  margin-bottom: 1rem;
-  font-family: 'Sora', sans-serif;
-}
-.channel-cards {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.channel-card {
-  background: var(--card-bg);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: var(--card-shadow);
-  flex: 1;
-  min-width: 220px;
-  transition: transform 0.3s ease;
-}
-.channel-card:hover {
-  transform: translateY(-3px);
-}
-.channel-card h3 {
-  font-size: 18px;
-  margin-bottom: 0.5rem;
-  font-family: 'Sora', sans-serif;
-}
-.channel-card p {
-  font-size: 14px;
-  margin-bottom: 0.5rem;
-}
-
-/* Notifications Panel */
-.notifications-panel h2 {
-  font-size: 22px;
-  margin-bottom: 1rem;
-  font-family: 'Sora', sans-serif;
-}
-.notifications-list {
-  background: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
-  padding: 16px;
-}
-.notification-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--row-border-color);
-  font-size: 14px;
-}
-.notification-item:last-child {
-  border-bottom: none;
-}
-
-/* Admin/Staff Team */
-.admin-team h2 {
-  font-size: 22px;
-  margin-bottom: 1rem;
-  font-family: 'Sora', sans-serif;
-}
-.team-list {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.team-member {
-  background: var(--card-bg);
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
-  padding: 16px;
-  flex: 1;
-  min-width: 200px;
-  transition: transform 0.3s ease;
-}
-.team-member:hover {
-  transform: translateY(-3px);
-}
-.team-member h3 {
-  font-size: 18px;
-  margin-bottom: 0.5rem;
-  font-family: 'Sora', sans-serif;
-}
-.team-member p {
-  font-size: 14px;
-  margin-bottom: 0.25rem;
-}
-
-/* Responsive Adjustments */
-@media screen and (max-width: 1024px) {
-  .dashboard-container {
-    flex-direction: column;
-  }
-  .main-content {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-  }
-  .quick-stats {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-}
-@media screen and (max-width: 768px) {
-  /* Sidebar can overlay or be hidden in a real scenario;
-     for now, we simply set main content full width. */
-  .main-content {
-    margin-left: 0;
-    width: 100%;
-  }
-  .dashboard-container {
-    flex-direction: column;
-  }
-  .quick-stats {
-    grid-template-columns: 1fr;
-  }
-  .channel-cards,
-  .team-list {
-    flex-direction: column;
-  }
-  .reports-table,
-  .notifications-list {
-    font-size: 12px;
-  }
 }

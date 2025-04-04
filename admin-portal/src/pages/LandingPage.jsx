@@ -13,7 +13,6 @@ const LandingPage = () => {
     useEffect(() => {
         const rainLayer1 = document.querySelector('.rain-layer-1');
         const rainLayer2 = document.querySelector('.rain-layer-2');
-        const lightning = document.querySelector('.lightning-flash');
 
         const createRaindrop = (layer, durationRange) => {
             const drop = document.createElement('div');
@@ -27,41 +26,32 @@ const LandingPage = () => {
         const interval1 = setInterval(() => createRaindrop(rainLayer1, [0.5, 1.2]), 100);
         const interval2 = setInterval(() => createRaindrop(rainLayer2, [1.2, 2.0]), 200);
 
-        // Lightning effect loop
-        const lightningLoop = setInterval(() => {
-            lightning.classList.add('flash');
-            setTimeout(() => {
-                lightning.classList.remove('flash');
-            }, 200 + Math.random() * 300); // random flash duration
-        }, 5000 + Math.random() * 4000); // flash every 5-9s randomly
-
         return () => {
             clearInterval(interval1);
             clearInterval(interval2);
-            clearInterval(lightningLoop);
         };
     }, []);
 
     return (
         <div className="landing-container">
-            {/* Background Rain & Lightning */}
+            {/* Background Effects */}
             <div className="background-effects">
-                <div className="lightning-flash"></div>
                 <div className="rain-layer rain-layer-1"></div>
                 <div className="rain-layer rain-layer-2"></div>
             </div>
 
             {/* Content */}
-            <div className="landing-content">
-                <img src={loginImage} alt="Admin Portal Logo" className="animated-logo" />
-                <h1 className="fade-in-up">Welcome, Admin!</h1>
-                <h2 className="fade-in-up delay-1">Lefatshe Larona Admin Portal</h2>
-                <p className="fade-in-up delay-2">
-                    Experience the best admin dashboard in the world. Manage your system with precision, style,
-                    and unparalleled performance. Welcome to Lefatshe Larona – where excellence meets innovation.
+            <div className="admin-landing-box fade-in-up">
+                <img src={loginImage} alt="Admin Logo" className="animated-logo" />
+                <h1 className="glitch-text">LEFATSHE LARONA</h1>
+                <h2 className="admin-sub">ADMIN PORTAL INTERFACE</h2>
+                <p className="admin-desc">
+                    Initiating access protocols...<br />
+                    Secure channels engaged. Real-time monitoring active.<br />
+                    Navigate. Broadcast. Manage. Impact.
                 </p>
-                <button className="login-button fade-in-up delay-3" onClick={handleLoginRedirect}>
-                    Go to Login
+                <button className="login-button" onClick={handleLoginRedirect}>
+                    Launch Admin Console
                 </button>
             </div>
         </div>

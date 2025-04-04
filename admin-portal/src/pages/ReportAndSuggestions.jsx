@@ -1,54 +1,43 @@
-// src/pages/ReportsAndSuggestions.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import '../styles/ReportsAndSuggestions.css';
 
-const ReportsAndSuggestions = () => {
-    const initialReports = [
-        {
-            id: 'rep1',
-            title: 'Issue with Community App',
-            description: 'There is a bug causing unexpected logout in the community app.',
-            status: 'Pending',
-            community: 'Mahalapye',
-            channel: 'In-App',
-            date: '2023-04-01 12:00'
-        },
-        {
-            id: 'rep2',
-            title: 'Suggestion: Dark Mode',
-            description: 'I suggest adding a dark mode option for better usability at night.',
-            status: 'Resolved',
-            community: 'Gaborone',
-            channel: 'Email',
-            date: '2023-04-02 15:30'
-        },
-        {
-            id: 'rep3',
-            title: 'Service Quality Report',
-            description: 'The service quality has declined recently in my area.',
-            status: 'Pending',
-            community: 'Gaborone',
-            channel: 'Social Media',
-            date: '2023-04-03 09:45'
-        }
-    ];
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081';
 
-    const [reports, setReports] = useState(initialReports);
+const ReportsAndSuggestions = () => {
+    const [reports, setReports] = useState([]);
     const [filterStatus, setFilterStatus] = useState('All');
     const [filterCommunity, setFilterCommunity] = useState('All');
     const [filterChannel, setFilterChannel] = useState('All');
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
-    // Modal state for responding to a report
     const [isRespondModalOpen, setIsRespondModalOpen] = useState(false);
     const [selectedReport, setSelectedReport] = useState(null);
     const [responseText, setResponseText] = useState('');
 
+    const token = localStorage.getItem('accessToken');
+
     const handleToggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const res = await fetch(`${API_URL}/reports`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Failed to fetch reports');
+                const data = await res.json();
+                setReports(data);
+            } catch (err) {
+                console.error(err);
+                setReports([]);
+            }
+        };
+        fetchReports();
+    }, [token]);
 
     const filteredReports = reports.filter(report =>
         (filterStatus === 'All' || report.status === filterStatus) &&
@@ -67,10 +56,25 @@ const ReportsAndSuggestions = () => {
         setSelectedReport(null);
     };
 
-    const handleSendResponse = () => {
-        // For demo purposes, we simply alert the response.
-        alert(`Response sent for report ${selectedReport.id}:\n${responseText}`);
-        closeRespondModal();
+    const handleSendResponse = async () => {
+        try {
+            const res = await fetch(`${API_URL}/reports/${selectedReport.id}/respond`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ response: responseText })
+            });
+
+            if (!res.ok) throw new Error('Failed to send response');
+
+            const updated = await res.json();
+            setReports((prev) => prev.map(r => r.id === updated.id ? updated : r));
+            closeRespondModal();
+        } catch (err) {
+            alert('Error: ' + err.message);
+        }
     };
 
     return (
@@ -89,43 +93,30 @@ const ReportsAndSuggestions = () => {
 
                 <div className="rs-content">
                     <div className="rs-filter">
-                        <label htmlFor="status-filter">Status:</label>
-                        <select
-                            id="status-filter"
-                            value={filterStatus}
-                            onChange={(e) => setFilterStatus(e.target.value)}
-                        >
+                        <label>Status:</label>
+                        <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
                             <option value="All">All</option>
                             <option value="Pending">Pending</option>
                             <option value="Resolved">Resolved</option>
                             <option value="Rejected">Rejected</option>
                         </select>
 
-                        <label htmlFor="community-filter">Community:</label>
-                        <select
-                            id="community-filter"
-                            value={filterCommunity}
-                            onChange={(e) => setFilterCommunity(e.target.value)}
-                        >
+                        <label>Community:</label>
+                        <select value={filterCommunity} onChange={(e) => setFilterCommunity(e.target.value)}>
                             <option value="All">All</option>
-                            <option value="Mahalapye">Mahalapye</option>
-                            <option value="Gaborone">Gaborone</option>
+                            {[...new Set(reports.map(r => r.community))].map(c => (
+                                <option key={c}>{c}</option>
+                            ))}
                         </select>
 
-                        <label htmlFor="channel-filter">Channel:</label>
-                        <select
-                            id="channel-filter"
-                            value={filterChannel}
-                            onChange={(e) => setFilterChannel(e.target.value)}
-                        >
+                        <label>Channel:</label>
+                        <select value={filterChannel} onChange={(e) => setFilterChannel(e.target.value)}>
                             <option value="All">All</option>
-                            <option value="In-App">In-App</option>
-                            <option value="Email">Email</option>
-                            <option value="Social Media">Social Media</option>
+                            {[...new Set(reports.map(r => r.channel))].map(ch => (
+                                <option key={ch}>{ch}</option>
+                            ))}
                         </select>
                     </div>
-
-                    {/* Graph removed as per request */}
 
                     <div className="rs-table-container">
                         <table className="rs-table">
@@ -160,9 +151,7 @@ const ReportsAndSuggestions = () => {
                                     </tr>
                                 ))
                             ) : (
-                                <tr>
-                                    <td colSpan="7">No reports available</td>
-                                </tr>
+                                <tr><td colSpan="7">No reports available</td></tr>
                             )}
                             </tbody>
                         </table>
@@ -170,18 +159,13 @@ const ReportsAndSuggestions = () => {
                 </div>
             </div>
 
-            {/* Respond Modal */}
             {isRespondModalOpen && selectedReport && (
                 <div className="modal-overlay">
                     <div className="modal">
                         <h3>Respond to Report</h3>
-                        <p>
-                            <strong>{selectedReport.title}</strong>
-                        </p>
+                        <p><strong>{selectedReport.title}</strong></p>
                         <p>{selectedReport.description}</p>
                         <textarea
-                            id="response-text"
-                            name="response-text"
                             value={responseText}
                             onChange={(e) => setResponseText(e.target.value)}
                             placeholder="Type your response here..."

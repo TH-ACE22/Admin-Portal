@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* Page container: Sidebar + Main Container */
+/* Page Container: Sidebar + Main */
 .community-management-page {
   display: flex;
   width: 100%;
@@ -10,73 +10,77 @@
   overflow: hidden;
 }
 
-/* Main container: top bar + content */
+/* Sidebar Collapsed */
+.sidebar.collapsed ~ .community-management-container {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+/* Main Container */
 .community-management-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 250px; /* wide sidebar */
+  margin-left: 250px;
   transition: margin-left 0.3s ease, width 0.3s ease;
-}
-
-/* If sidebar is collapsed */
-.sidebar.collapsed ~ .community-management-container {
-  margin-left: 80px;
-  width: calc(100% - 80px);
+  background-color: #f8f9fb;
 }
 
 /* Top Bar */
 .cm-topbar {
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-}
-/* Menu & Home Buttons */
-.cm-home-btn {
-  margin-right: auto;
-  display: inline-block;
+  z-index: 10;
 }
 
+/* Home Button */
+.cm-home-btn {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+}
 .cm-home-btn img {
   width: 24px;
   height: 24px;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.cm-home-btn img:hover {
+  transform: scale(1.1);
 }
 
-/* Menu button can appear next, then the heading. */
-.cm-menu-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-right: 2rem; /* or adjust as needed */
-}
-
-.cm-menu-btn img {
-  width: 24px;
-  height: 24px;
-}
-
-/* Heading can be allowed to flex: 0 if you want it near the menu,
-   or flex: 1 with text-align: center if you want it centered. */
+/* Top Bar Heading */
 .cm-topbar h2 {
-  flex: 1;              /* This pushes the heading to the center */
-  font-size: 24px;
+  flex: 1;
+  font-size: 20px;
   font-weight: 600;
   margin: 0;
   text-align: center;
+  color: #2f3542;
 }
 
-/* Content area below top bar */
+/* Content Area */
 .cm-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   overflow-y: auto;
   box-sizing: border-box;
+}
+
+/* Error Messages */
+.cm-error {
+  color: #e63946;
+  background: #fceeed;
+  border: 1px solid #e63946;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 14px;
 }
 
 /* Add Form */
@@ -84,103 +88,193 @@
   display: flex;
   gap: 12px;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
-.cm-add-form input {
-  padding: 8px;
-  border: 1px solid #ccc;
+.cm-add-form input,
+.cm-add-form select {
+  flex: 1 1 160px;
+  padding: 6px 10px;
+  border: 1px solid #ccd0d5;
   border-radius: 4px;
   font-size: 14px;
-  flex: 1;
+  transition: border-color 0.2s;
+  height: 36px;
+}
+.cm-add-form input:focus,
+.cm-add-form select:focus {
+  border-color: #5874C6;
+  outline: none;
 }
 .cm-add-form button {
+  flex: 0 0 auto;
   background-color: #5874C6;
-  color: #fff;
+  color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  height: 36px;
 }
 .cm-add-form button:hover {
   background-color: #4f65b2;
 }
 
-/* Table container: expands to fill space */
+/* Table Container */
 .cm-table-container {
   flex: 1;
-  min-height: 600px;
-  overflow-y: auto;
+  min-height: 400px;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 
-/* Table styling: big, business admin look */
+/* Table Styling */
 .cm-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 16px;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-size: 12px; /* reduced from 14px */
   table-layout: fixed;
-  min-width: 900px;
+  min-width: 800px;
 }
 .cm-table thead {
-  background: linear-gradient(90deg, #4f65b2 0%, #5874C6 100%);
+  background: #5874C6;
   color: #fff;
 }
 .cm-table th,
 .cm-table td {
-  padding: 12px;
+  padding: 8px; /* slightly reduced padding */
   text-align: left;
-  white-space: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px; /* ensure cells match table font-size */
 }
 .cm-table thead th {
   font-weight: 600;
 }
 .cm-table tbody tr {
   border-bottom: 1px solid #eee;
-  height: 60px;
+  transition: background 0.2s;
 }
 .cm-table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.04) 100%);
+  background: #f8f9fb;
 }
-/* Action buttons in the last cell */
+
+/* Action Buttons */
 .cm-table tbody td:last-child {
   display: flex;
-  gap: 4px;
-  align-items: center;
-  flex-wrap: wrap;
+  gap: 6px;
 }
 .cm-table tbody button {
   background-color: #eee;
   border: none;
-  padding: 6px 10px;
-  margin-right: 8px;
+  padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 13px;
-  flex: 0 1 auto;
+  font-size: 12px; /* reduced from 13px */
+  transition: background-color 0.2s ease;
+  height: 28px;
 }
 .cm-table tbody button:hover {
   background-color: #ddd;
 }
-.cm-table td[colspan="6"] {
+
+/* No Data Row */
+.cm-table td[colspan] {
   text-align: center;
   color: #999;
+  padding: 1rem;
+  font-size: 12px;
+}
+
+/* Modal Styling */
+.modal {
+  background: #fff;
+  border-radius: 6px;
+  padding: 1.5rem;
+  max-width: 450px;
+  width: 90%;
+  margin: auto;
+  outline: none;
+}
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  margin-bottom: 0.75rem;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 36px;
+}
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+.modal-buttons button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  height: 36px;
+}
+.modal-buttons button:first-child {
+  background: #5874C6;
+  color: white;
+}
+.modal-buttons button:first-child:hover {
+  background: #4f65b2;
+}
+.modal-buttons button:last-child {
+  background: #ccc;
+  color: #333;
+}
+.modal-buttons button:last-child:hover {
+  background: #bbb;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .cm-topbar h2 {
-    font-size: 20px;
+  .community-management-container {
+    margin-left: 80px;
   }
-  .cm-add-form {
-    flex-direction: column;
-    gap: 8px;
+  .cm-topbar h2 {
+    font-size: 18px;
+  }
+  .cm-add-form input,
+  .cm-add-form select,
+  .cm-add-form button {
+    height: 32px;
+    font-size: 13px;
   }
   .cm-table th,
   .cm-table td {
-    font-size: 12px;
-    padding: 8px;
+    padding: 6px;
+    font-size: 10px; /* increased responsiveness */
+  }
+  .modal {
+    padding: 1rem;
+  }
+  .modal-content input,
+  .modal-content select,
+  .modal-buttons button {
+    height: 32px;
+    font-size: 13px;
   }
 }
