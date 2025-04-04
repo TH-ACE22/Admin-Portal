@@ -4,6 +4,29 @@ import { Link } from 'react-router-dom';
 import GovernmentSidebar from '../components/GovernmentSidebar';
 import '../styles/GovernmentSuggestionReport.css';
 
+// Reusable modal component
+const RespondModal = ({ report, responseText, setResponseText, onClose, onSend }) => (
+    <div className="modal-overlay">
+        <div className="modal">
+            <h3>Respond to Report</h3>
+            <p><strong>{report.title}</strong></p>
+            <p>{report.description}</p>
+            <textarea
+                id="response-text"
+                name="response-text"
+                value={responseText}
+                onChange={(e) => setResponseText(e.target.value)}
+                placeholder="Type your response here..."
+                rows="5"
+            ></textarea>
+            <div className="modal-actions">
+                <button onClick={onSend}>Send Response</button>
+                <button onClick={onClose}>Cancel</button>
+            </div>
+        </div>
+    </div>
+);
+
 const GovernmentReportSuggestion = () => {
     const initialReports = [
         {
@@ -13,7 +36,7 @@ const GovernmentReportSuggestion = () => {
             status: 'Pending',
             community: 'Mahalapye',
             channel: 'In-App',
-            date: '2023-04-01 12:00'
+            date: '2023-04-01 12:00',
         },
         {
             id: 'rep2',
@@ -22,7 +45,7 @@ const GovernmentReportSuggestion = () => {
             status: 'Resolved',
             community: 'Gaborone',
             channel: 'Email',
-            date: '2023-04-02 15:30'
+            date: '2023-04-02 15:30',
         },
         {
             id: 'rep3',
@@ -31,32 +54,21 @@ const GovernmentReportSuggestion = () => {
             status: 'Pending',
             community: 'Gaborone',
             channel: 'In-App',
-            date: '2023-04-03 09:45'
-        }
+            date: '2023-04-03 09:45',
+        },
     ];
 
-    const [reports, setReports] = useState(initialReports);
+    const [reports] = useState(initialReports);
     const [filterStatus, setFilterStatus] = useState('All');
     const [filterCommunity, setFilterCommunity] = useState('All');
-    // Set filterChannel to the specific channel you want to show (e.g., "In-App")
     const [filterChannel] = useState('In-App');
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
-    // Modal state for responding to a report
     const [isRespondModalOpen, setIsRespondModalOpen] = useState(false);
     const [selectedReport, setSelectedReport] = useState(null);
     const [responseText, setResponseText] = useState('');
 
-    const handleToggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
-    };
-
-    // Filter reports including channel equals "In-App"
-    const filteredReports = reports.filter(report =>
-        (filterStatus === 'All' || report.status === filterStatus) &&
-        (filterCommunity === 'All' || report.community === filterCommunity) &&
-        report.channel === filterChannel
-    );
+    const handleToggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
     const openRespondModal = (report) => {
         setSelectedReport(report);
@@ -65,8 +77,8 @@ const GovernmentReportSuggestion = () => {
     };
 
     const closeRespondModal = () => {
-        setIsRespondModalOpen(false);
         setSelectedReport(null);
+        setIsRespondModalOpen(false);
     };
 
     const handleSendResponse = () => {
@@ -74,20 +86,53 @@ const GovernmentReportSuggestion = () => {
         closeRespondModal();
     };
 
+    const filteredReports = reports.filter(report =>
+        (filterStatus === 'All' || report.status === filterStatus) &&
+        (filterCommunity === 'All' || report.community === filterCommunity) &&
+        report.channel === filterChannel
+    );
+
+    const renderTableRows = () => {
+        if (filteredReports.length === 0) {
+            return (
+                <tr>
+                    <td colSpan="7">No reports available</td>
+                </tr>
+            );
+        }
+
+        return filteredReports.map((report) => (
+            <tr key={report.id}>
+                <td>{report.id}</td>
+                <td>{report.title}</td>
+                <td>{report.community}</td>
+                <td>{report.channel}</td>
+                <td className={`status-${report.status.toLowerCase()}`}>
+                    {report.status}
+                </td>
+                <td>{report.date}</td>
+                <td>
+                    <button onClick={() => openRespondModal(report)}>Respond</button>
+                </td>
+            </tr>
+        ));
+    };
+
     return (
         <div className="gov-servant-page">
             <GovernmentSidebar isOpen={sidebarOpen} toggleSidebar={handleToggleSidebar} />
+
             <div className="gov-servant-container">
-                {/* Custom Top Bar */}
+                {/* Top Bar */}
                 <div className="gov-page-header">
-                    <Link to="/government" className="gov-home-btn">
-                        <img src="/icons/home.svg" alt="Home" />
+                    <Link to="/government" className="gov-home-btn" aria-label="Go to Home">
+                        <img src="/icons/home.svg" alt="Home Icon" />
                     </Link>
                     <h2>Reports & Suggestions</h2>
                 </div>
 
                 <div className="gov-content">
-                    {/* Filter Section (Channel filter removed) */}
+                    {/* Filters */}
                     <div className="gov-filter">
                         <label htmlFor="status-filter">Status:</label>
                         <select
@@ -113,7 +158,7 @@ const GovernmentReportSuggestion = () => {
                         </select>
                     </div>
 
-                    {/* Table Section */}
+                    {/* Table */}
                     <div className="gov-table-container">
                         <table className="gov-table">
                             <thead>
@@ -127,58 +172,21 @@ const GovernmentReportSuggestion = () => {
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            {filteredReports.length > 0 ? (
-                                filteredReports.map(report => (
-                                    <tr key={report.id}>
-                                        <td>{report.id}</td>
-                                        <td>{report.title}</td>
-                                        <td>{report.community}</td>
-                                        <td>{report.channel}</td>
-                                        <td className={`status-${report.status.toLowerCase()}`}>
-                                            {report.status}
-                                        </td>
-                                        <td>{report.date}</td>
-                                        <td>
-                                            <button onClick={() => openRespondModal(report)}>
-                                                Respond
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="7">No reports available</td>
-                                </tr>
-                            )}
-                            </tbody>
+                            <tbody>{renderTableRows()}</tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            {/* Respond Modal */}
+            {/* Modal */}
             {isRespondModalOpen && selectedReport && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <h3>Respond to Report</h3>
-                        <p>
-                            <strong>{selectedReport.title}</strong>
-                        </p>
-                        <p>{selectedReport.description}</p>
-                        <textarea
-                            id="response-text"
-                            name="response-text"
-                            value={responseText}
-                            onChange={(e) => setResponseText(e.target.value)}
-                            placeholder="Type your response here..."
-                        ></textarea>
-                        <div className="modal-actions">
-                            <button onClick={handleSendResponse}>Send Response</button>
-                            <button onClick={closeRespondModal}>Cancel</button>
-                        </div>
-                    </div>
-                </div>
+                <RespondModal
+                    report={selectedReport}
+                    responseText={responseText}
+                    setResponseText={setResponseText}
+                    onClose={closeRespondModal}
+                    onSend={handleSendResponse}
+                />
             )}
         </div>
     );
